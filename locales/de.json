@@ -1,0 +1,21 @@
+{
+  "Booking": {
+    "formName":"Gruppenbuchung anfragen",
+    "formDescription1":"Sie planen eine Gruppenveranstaltung und benötigen 10 oder mehr Zimmer?",
+    "formDescription2":"Füllen Sie das untenstehende Formular aus! Sobald wir Ihre Anfrage erhalten haben, wird sich unser Team mit Ihnen in Verbindung setzen.",
+    "title": "Gruppenbuchungsanfrage",
+    "highlight": "Günstige Aufenthalte für große Gruppen.",
+    "description": "Erzählen Sie uns mehr über Ihre Reisebedürfnisse.",
+    "contactDetails": "Kontaktdaten",
+    "titleLabel": "Anrede",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "phone": "Telefonnummer",
+    "email": "E-Mail-Adresse",
+    "continue": "Weiter",
+    "bookingDetails": "Buchungsdetails",
+    "bookingContent": "Inhalt des Buchungsabschnitts...",
+    "roomRequirements": "Zimmeranforderungen",
+    "roomContent": "Inhalt des Zimmerabschnitts..."
+  }
+}

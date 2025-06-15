@@ -1,0 +1,21 @@
+{
+  "Booking": {
+    "formName":"Request a group booking",
+    "formDescription1":"Planning a group event and need 10 or more rooms? Fill out the form below! Once we’ve received your request, our group booking team will be in touch.",
+    "formDescription2":"Fill out the form below! Once we’ve received your request, our group booking team will be in touch.",
+    "title": "Group Booking Enquiry",
+    "highlight": "Great value stays for large groups.",
+    "description": "Tell us more about your travel needs.",
+    "contactDetails": "Contact Details",
+    "titleLabel": "Title",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "phone": "Phone Number",
+    "email": "Email Address",
+    "continue": "Continue",
+    "bookingDetails": "Booking Details",
+    "bookingContent": "Booking section content...",
+    "roomRequirements": "Room Requirements",
+    "roomContent": "Room section content..."
+  }
+}
