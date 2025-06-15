@@ -8,22 +8,20 @@ type Props = {
   params: { locale: string };
 };
 
-export default async function LocaleLayout(props: Props) {
-  const { children } = props;
-
-  const params = await Promise.resolve(props.params); // 🔥 KEY FIX
-  const locale = params.locale;
+export default async function LocaleLayout({ children, params }: Props) { // ✅ Destructured props
+  const locale = params.locale;  // ✅ Removed unnecessary Promise.resolve
 
   let messages;
   try {
     messages = (await import(`../../locales/${locale}.json`)).default;
   } catch (error) {
+    console.error("Locale JSON not found:", error); // ✅ Added logging for debugging
     notFound();
   }
 
   return (
     <html lang={locale}>
-        <head>
+      <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body>
