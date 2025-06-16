@@ -16,6 +16,19 @@
     "bookingDetails": "Booking Details",
     "bookingContent": "Booking section content...",
     "roomRequirements": "Room Requirements",
-    "roomContent": "Room section content..."
+    "roomContent": "Room section content...",
+    "accordianContactDetails":"Your contact details",
+    "error_title":"Please select your title.",
+    "error_firstname":"Please enter your first name.",
+    "error_lastname":"Please enter your last name.",
+    "error_phonenumber":"Please enter your phone number.",
+    "error_emailaddress":"Please enter a valid email address.",
+    "room_requirment":"Room requirements"
+
+
+
+
+
+
   }
 }

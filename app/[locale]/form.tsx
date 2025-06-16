@@ -353,16 +353,16 @@ export default function Form({ data }: { data: any }) {
         <main role="main" aria-labelledby="group-booking-title">
           <h1 className="text-xl sm:text-2xl font-semibold mb-2">{t('formName')}</h1>
           <p className="text-sm sm:text-base text-gray-600 my-6">
-            <strong>{t('formDescription1')}</strong> {' '}{t('formDescription2')}
+            <strong>{t('formDescription1')}</strong> {' '}
           </p>
 
           {/* Contact details (always open) */}
           <form onSubmit={handleSubmit(onSubmit)}>
-            <Accordion title="Contact details" isOpen={activeIndex === 0} onToggle={() => setActiveIndex(0)}>
-              <h2 className="text-lg font-semibold mb-6 text-[#333]">Your contact details</h2>
-              <div className="mb-4 relative w-[200px]">
+            <Accordion title={t('contactDetails')} isOpen={activeIndex === 0} onToggle={() => setActiveIndex(0)}>
+              <h2 className="text-lg font-semibold mb-6 text-[#333]">{t('accordianContactDetails')} </h2>
+              <div className="mb-4 relative max-w-[200px]">
                 <label htmlFor="title" id="contact-details-title" className="block text-sm font-medium text-gray-900 absolute left-[20%] transform -translate-x-1/2 top-[-22%] z-10 bg-white px-2">
-                  Title *
+                  {t('titleLabel')}
                 </label>
                 <select
                   {...register("contact.title")}
@@ -390,7 +390,7 @@ export default function Form({ data }: { data: any }) {
                 </select>
 
                 {errors.contact?.title && (
-                  <p className="text-red-600">{errors.contact.title.message}</p>
+                  <p className="text-red-600">{t('error_title')}</p>
                 )}
               </div>
               {/* First Name */}
@@ -398,7 +398,7 @@ export default function Form({ data }: { data: any }) {
                 <input {...register("contact.firstName")}
                   id="FirstName"
                   type="text"
-                  placeholder="First Name *" aria-required="true"
+                  placeholder={t('firstName')} aria-required="true"
                   aria-describedby="firstName-desc"
                   className="peer w-full border border-gray-300 rounded px-4 py-3 text-sm text-[#333]"
                 />
@@ -406,10 +406,10 @@ export default function Form({ data }: { data: any }) {
                   htmlFor="FirstName"
                   className="block text-sm font-medium text-gray-900 absolute left-[2%] top-[-22%] z-10 bg-white px-2 opacity-0 peer-focus:opacity-100 transition-opacity duration-200"
                 >
-                  First Name *
+                    {t('firstName')}
                 </label>
                 {errors.contact?.firstName?.message && (
-                  <p className="text-red-600">{errors.contact.firstName.message}</p>
+                  <p className="text-red-600">{t('error_firstname')}</p>
                 )}
               </div>
 
@@ -418,7 +418,7 @@ export default function Form({ data }: { data: any }) {
                 <input  {...register("contact.lastName")}
                   id="LastName"
                   type="text"
-                  placeholder="Last Name *" aria-required="true"
+                  placeholder= {t('lastName')} aria-required="true"
                   aria-describedby="lastName-desc"
                   className="peer w-full border border-gray-300 rounded px-4 py-3 text-sm text-[#333]"
                 />
@@ -426,10 +426,10 @@ export default function Form({ data }: { data: any }) {
                   htmlFor="LastName"
                   className="block text-sm font-medium text-gray-900 absolute left-[2%] top-[-22%] z-10 bg-white px-2 opacity-0 peer-focus:opacity-100 transition-opacity duration-200"
                 >
-                  Last Name *
+                   {t('lastName')}
                 </label>
                 {errors.contact?.lastName?.message && (
-                  <p className="text-red-600">{errors.contact.lastName.message}</p>
+                  <p className="text-red-600">{t('error_lastname')}</p>
                 )}
               </div>
 
@@ -467,7 +467,7 @@ export default function Form({ data }: { data: any }) {
                     <input  {...register("contact.phoneNumber")}
                       type="tel"
                       id="PhoneNumber"
-                      placeholder=" "
+                      placeholder={t('phone')}
                       value={phoneInputValue}
                       onChange={handlePhoneChange}
                       className="peer w-full outline-none text-[#333] bg-transparent"
@@ -478,12 +478,12 @@ export default function Form({ data }: { data: any }) {
                       htmlFor="PhoneNumber" style={{ transform: 'translateY(-120%)' }}
                       className="absolute left-[-20%] top-0 text-sm font-medium text-gray-900 bg-white px-1 transition-opacity duration-200 opacity-0 peer-focus:opacity-100 peer-placeholder-shown:opacity-0"
                     >
-                      Phone number *
+                      {t('phone')} *
                     </label>
                   </div>
                 </div>
                 {errors.contact?.phoneNumber?.message && (
-                  <p className="text-red-600">{errors.contact.phoneNumber.message}</p>
+                  <p className="text-red-600">{t('error_phonenumber')}</p>
                 )}
                 <p id="phone-desc" className="sr-only">
                   Enter a valid phone number including area code.
@@ -539,7 +539,7 @@ export default function Form({ data }: { data: any }) {
                 <input {...register("contact.email")}
                   id="Email"
                   type="email"
-                  placeholder="Email Address *"
+                  placeholder={t('email')}
                   className="peer w-full border border-gray-300 rounded px-4 py-3 text-sm text-[#333]"
                   aria-required="true"
                   aria-describedby="email-desc"
@@ -548,7 +548,7 @@ export default function Form({ data }: { data: any }) {
                   htmlFor="Email"
                   className="block text-sm font-medium text-gray-900 absolute left-[2%] top-[-22%] z-10 bg-white px-2 opacity-0 peer-focus:opacity-100 transition-opacity duration-200"
                 >
-                  Email Address *
+                  {t('email')} *
                 </label>
                 {errors.contact?.email?.message && (
                   <p className="text-red-600">{errors.contact.email.message}</p>
@@ -566,7 +566,7 @@ export default function Form({ data }: { data: any }) {
 
 
             {/* Booking details */}
-            <Accordion title="Booking details" isOpen={activeIndex === 1}
+            <Accordion title={t('bookingDetails')} isOpen={activeIndex === 1}
               onToggle={() => setActiveIndex(1)}>
               <div className="space-y-6">
                 <div className="max-w-md space-y-6 text-sm text-gray-800" aria-labelledby="booking-details-heading">
@@ -786,7 +786,7 @@ export default function Form({ data }: { data: any }) {
             </Accordion>
 
             {/* Room requirements */}
-            <Accordion title="Room requirements" isOpen={activeIndex === 2}
+            <Accordion title={t('room_requirment')} isOpen={activeIndex === 2}
               onToggle={() => setActiveIndex(2)} aria-expanded={activeIndex === 2}
               aria-controls="room-requirements-panel" aria-labelledby="room-requirements-header">
 
