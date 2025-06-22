@@ -2,7 +2,8 @@ import { Suspense } from 'react';
 import Form from './form';
 
 async function getData() {
-  const res = await fetch('http://localhost:3000/api/booking', { cache: 'no-store' }  );
+   const apiUrl:string = process.env.API_URL || 'http://localhost:3000/api/booking';
+  const res = await fetch(apiUrl, { cache: 'no-store' }  );
   return res.json();
 }
 

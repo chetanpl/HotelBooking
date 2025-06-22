@@ -187,7 +187,8 @@ const payload = {
     },
   };
   try {
-    const response = await fetch('http://localhost:3000/api/booking', {
+    const apiUrl:string = process.env.API_URL || 'http://localhost:3000/api/booking';
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -201,6 +202,7 @@ const payload = {
     } else {
       const result = await response.json();
       alert(result.message);
+      window.location.reload();
     }
   } catch (error) {
     console.error('Submission failed:', error);
@@ -302,15 +304,11 @@ const payload = {
 
   const handleContinue = async () => {
     const isValidContact = await trigger('contact');
-    // const isValidbooking = await trigger('booking');// replace with field names to validate
+
     if (isValidContact) {
       setActiveIndex(1)
     }
-    // else if (isValidbooking) {
-    //   setActiveIndex(2)
-    // } else {
-    //   // Validation failed
-    // }
+
   };
 
   const continueBooking = async () => {
