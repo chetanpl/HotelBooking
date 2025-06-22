@@ -15,10 +15,10 @@ export const bookingSchema = z.object({
   stayType: z.string().min(1, "Please select a stay type"),
   schoolGroup: z.boolean(),
   groupVisitReason: z.string().min(1, "Please select a reason for visit"),
-  checkIn: z.date({
+  checkIn: z.coerce.date({
   required_error: "Check-in date is required",
 }),
-  checkOut: z.date({
+  checkOut: z.coerce.date({
   required_error: "Check-out date is required",
 }),
   packageType: z.string().min(1, "Please select a package type"),

@@ -172,13 +172,39 @@ export default function Form({ data }: { data: any }) {
   });
 
 
-  const onSubmit = (data: ContactDetailsFormValues
+  const onSubmit = async (data: ContactDetailsFormValues
   ) => {
     const contact = data.contact;
     const booking = data.booking;
     const totalRoom = data.numberofroom?.room?.total;
     const anyComments= data.numberofroom?.room;
+const payload = {
+    contact: data.contact,
+    booking: data.booking,
+    numberofroom: {
+      room: data.numberofroom?.room,
+      comments: data.numberofroom?.comments || '',
+    },
+  };
+  try {
+    const response = await fetch('http://localhost:3000/api/booking', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
 
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Validation error:', errorData.error);
+    } else {
+      const result = await response.json();
+      alert(result.message);
+    }
+  } catch (error) {
+    console.error('Submission failed:', error);
+  }
     // handle the full form data
   };
 
@@ -201,14 +227,14 @@ export default function Form({ data }: { data: any }) {
   }, []);
   useEffect(() => {
     if (checkIn) {
-      setValue("booking.checkIn", checkIn);
+      setValue("booking.checkIn", new Date(checkIn));
       clearErrors("booking.checkIn");
     }
   }, [checkIn]);
 
   useEffect(() => {
     if (checkOut) {
-      setValue("booking.checkOut", checkOut);
+      setValue("booking.checkOut",  new Date(checkOut));
       clearErrors("booking.checkOut");
     }
   }, [checkOut]);
