@@ -19,7 +19,7 @@ import RoomSelector from "../components/roomstype";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { contactDetailsSchema, ContactDetailsFormValues, combinedSchema } from "./../../utility/validationSchema";
 import { z } from "zod";
-import { useForm ,SubmitHandler} from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { countries, extraRoom, familyOptions, hotels, initialRoomOptions } from "@/utility/data";
 export type RoomType = "single" | "double" | "twin" | "family2" | "family3_1" | "family3_2" | "family4" | "AccessibleSingle" | "Accessibledouble" | "Accessibletwin"
 interface Rooms {
@@ -54,7 +54,7 @@ function Accordion({ title,
   return (
     <div className="border rounded mb-4 shadow-sm">
       <button
-        type="submit"
+        type="button"
         className="w-full font-semibold bg-white-100 p-4 flex justify-between items-center text-[#717377] border-b text-sm sm:text-base"
         onClick={onToggle} aria-expanded={isOpen} aria-label={`${title}, ${isOpen ? 'expanded' : 'collapsed'}`} id="collapsible-button"
 
@@ -138,7 +138,6 @@ export default function Form({ data }: { data: any }) {
       initialRoomOptions.map(({ type }) => [type, 0])
     ) as Record<RoomType, number>;
   });
-  const [minimumRoomWarnig, setMinimumRoomWarnig] = useState<boolean>(false);
 
   const {
     register,
@@ -168,44 +167,27 @@ export default function Form({ data }: { data: any }) {
         checkOut: undefined,
         packageType: "",
       },
+      numberofroom: { room: { 'totalRooms': 0 },comments:"" }
     },
   });
 
 
-  const onSubmit = (data: ContactDetailsFormValues) => {
+  const onSubmit = (data: ContactDetailsFormValues
+  ) => {
     const contact = data.contact;
     const booking = data.booking;
+    const totalRoom = data.numberofroom?.room?.total;
+    const anyComments= data.numberofroom?.room;
 
-
-    debugger;
-    const totalRooms = Object.values(rooms).reduce((total, count) => total + count, 0);
-     const showWarning = totalRooms < 10;
-     debugger;
-     setMinimumRoomWarnig(showWarning)
-    if(showWarning){
-      
-    }
     // handle the full form data
   };
-// const onSubmit: SubmitHandler<ContactDetailsFormValues> = (data: ContactDetailsFormValues) => {
-//     const totalRooms = Object.values(rooms).reduce((total, count) => total + count, 0);
-//     const showWarning = totalRooms < 10;
-//     setMinimumRoomWarnig(showWarning);
-
-//     if (showWarning) {
-//       console.log("Warning: Less than 10 rooms selected.");
-//     } else {
-//       console.log("Form submitted with data:", data);
-//     }
-//   };
-
 
   const t = useTranslations('Booking');
-    useEffect(() => {
-      if (countryDropdownOpen && searchInputRef.current) {
-        searchInputRef.current.focus();
-      }
-    }, [countryDropdownOpen]);
+  useEffect(() => {
+    if (countryDropdownOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [countryDropdownOpen]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -230,7 +212,7 @@ export default function Form({ data }: { data: any }) {
       clearErrors("booking.checkOut");
     }
   }, [checkOut]);
-  
+
   const toggleDropdown = (): void => setCountryDropdownOpen(!countryDropdownOpen);
   const handleSelect = (country: Country): void => {
     setSelectedCountry(country);
@@ -293,7 +275,6 @@ export default function Form({ data }: { data: any }) {
 
 
   const handleContinue = async () => {
-    debugger;
     const isValidContact = await trigger('contact');
     // const isValidbooking = await trigger('booking');// replace with field names to validate
     if (isValidContact) {
@@ -345,6 +326,10 @@ export default function Form({ data }: { data: any }) {
     }
     // Proceed with form submission
   };
+  useEffect(() => {
+    const totalRooms = Object.values(rooms).reduce((sum, count) => sum + count, 0);
+    setValue("numberofroom.room", { total: totalRooms });
+  }, [rooms])
 
   return (
     <>
@@ -406,7 +391,7 @@ export default function Form({ data }: { data: any }) {
                   htmlFor="FirstName"
                   className="block text-sm font-medium text-gray-900 absolute left-[2%] top-[-22%] z-10 bg-white px-2 opacity-0 peer-focus:opacity-100 transition-opacity duration-200"
                 >
-                    {t('firstName')}
+                  {t('firstName')}
                 </label>
                 {errors.contact?.firstName?.message && (
                   <p className="text-red-600">{t('error_firstname')}</p>
@@ -418,7 +403,7 @@ export default function Form({ data }: { data: any }) {
                 <input  {...register("contact.lastName")}
                   id="LastName"
                   type="text"
-                  placeholder= {t('lastName')} aria-required="true"
+                  placeholder={t('lastName')} aria-required="true"
                   aria-describedby="lastName-desc"
                   className="peer w-full border border-gray-300 rounded px-4 py-3 text-sm text-[#333]"
                 />
@@ -426,7 +411,7 @@ export default function Form({ data }: { data: any }) {
                   htmlFor="LastName"
                   className="block text-sm font-medium text-gray-900 absolute left-[2%] top-[-22%] z-10 bg-white px-2 opacity-0 peer-focus:opacity-100 transition-opacity duration-200"
                 >
-                   {t('lastName')}
+                  {t('lastName')}
                 </label>
                 {errors.contact?.lastName?.message && (
                   <p className="text-red-600">{t('error_lastname')}</p>
@@ -437,7 +422,7 @@ export default function Form({ data }: { data: any }) {
               <div className="mb-4 relative" ref={dropdownRef}>
                 <div className="flex border border-gray-300 rounded px-4 py-3 text-sm focus-within:ring-2 focus-within:ring-blue-500">
                   <button
-                    type="submit" 
+                    type="button"
                     onClick={toggleDropdown}
                     className="flex items-center pr-2 focus:outline-none"
                     aria-expanded={countryDropdownOpen}
@@ -503,7 +488,7 @@ export default function Form({ data }: { data: any }) {
                         value={countrySearch}
                         onChange={(e) => setCountrySearch(e.target.value)}
                         aria-label="Search countries"
-                        
+
                       />
                     </li>
                     {countries
@@ -556,7 +541,7 @@ export default function Form({ data }: { data: any }) {
               </div>
 
               {/* Submit Button */}
-              <button type="submit" aria-label="Continue to next step" onClick={handleContinue} className="w-full bg-[#007f8f] text-white font-semibold py-3 rounded hover:bg-[#006e7c] transition">
+              <button type="button" id='continueBooking1' aria-label="Continue to next step" onClick={handleContinue} className="w-full bg-[#007f8f] text-white font-semibold py-3 rounded hover:bg-[#006e7c] transition">
                 Continue
               </button>
             </Accordion>
@@ -755,7 +740,8 @@ export default function Form({ data }: { data: any }) {
                           setActiveField(null); // close picker after selecting
                         }}
                         inline
-                        minDate={activeField === 'checkout' && checkIn ? checkIn : undefined}
+                        minDate={
+                          activeField === 'checkout' && checkIn ? checkIn : new Date()}
                       />
                     </div>
                   )}
@@ -777,7 +763,7 @@ export default function Form({ data }: { data: any }) {
                 {errors.booking?.packageType && (
                   <p className="text-sm text-red-600 mt-1">{errors.booking.packageType.message}</p>
                 )}
-                <>   <button type="submit"  onClick={continueBooking} aria-label="Continue to next step" className="w-full bg-[#007f8f] text-white font-semibold py-3 rounded hover:bg-[#006e7c] transition">
+                <>   <button type="button" id='continueBooking2' onClick={continueBooking} aria-label="Continue to next step" className="w-full bg-[#007f8f] text-white font-semibold py-3 rounded hover:bg-[#006e7c] transition">
                   Continue
                 </button></>
               </div>
@@ -818,8 +804,6 @@ export default function Form({ data }: { data: any }) {
                   </label>
                 </div>
 
-
-
                 <div className="flex items-center gap-2 my-3">
                   <input
                     type="checkbox"
@@ -853,56 +837,37 @@ export default function Form({ data }: { data: any }) {
                   </div>
                 }
 
-
-
-
-
-
-
-
-
-
-
-
-                {minimumRoomWarnig && (
-  <div
-    role="alert"
-    aria-live="polite"
-    className="border border-red-500 bg-pink-100 text-red-800 rounded px-4 py-3 flex gap-3 items-start text-sm mb-6"
-  >
-   <AlertTriangle
-      className="w-10 h-5 mt-0.5 text-red-500"
-      aria-hidden="true"
-      focusable="false"
-    />
-    <div>
-      <p id="group-booking-info">
-        Group bookings require a minimum of 10 rooms. For a group booking of 6 to 9 rooms, call us on 0333 003 8101. For a group booking of up to 5 rooms, visit our website.
-      </p>
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://www.premierinn.com/gb/en/home.html"
-        className="underline text-purple-700 hover:text-purple-800 focus:outline-none focus:ring focus:ring-purple-300"
-        aria-describedby="group-booking-info"
-      >
-        Read occupancy policy
-      </a>
-    </div>
-  </div>
-)}
-
-
-
-
-
-
+                {errors.numberofroom?.message && (
+                  <div
+                    role="alert"
+                    aria-live="polite"
+                    className="border border-red-500 bg-pink-100 text-red-800 rounded px-4 py-3 flex gap-3 items-start text-sm mb-6"
+                  >
+                    <AlertTriangle
+                      className="w-10 h-5 mt-0.5 text-red-500"
+                      aria-hidden="true"
+                      focusable="false"
+                    />
+                    <div>
+                      <p id="group-booking-info">
+                        Group bookings require a minimum of 10 rooms. For a group booking of 6 to 9 rooms, call us on 0333 003 8101. For a group booking of up to 5 rooms, visit our website.
+                      </p>
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://www.premierinn.com/gb/en/home.html"
+                        className="underline text-purple-700 hover:text-purple-800 focus:outline-none focus:ring focus:ring-purple-300"
+                        aria-describedby="group-booking-info"
+                      >
+                        Read occupancy policy
+                      </a>
+                    </div>
+                  </div>
+                )}
 
                 <div className="space-y-2">
-                  <RoomSelector options={roomOptions}  rooms={rooms} setRooms={setRooms} />;
+                  <RoomSelector options={roomOptions} rooms={rooms} setRooms={setRooms} />
                 </div>
-
-
 
                 <section aria-labelledby="additional-info-heading" className="mt-6">
                   <h3 id="additional-info-heading" className="text-xl font-semibold">
@@ -922,10 +887,11 @@ export default function Form({ data }: { data: any }) {
                   id="comments"
                   placeholder="Enter your comments here"
                   maxLength={1000}
+                  onChange={(e)=> setValue("numberofroom.comments", e.target?.value)}
                   className="w-full mt-2 p-2 border rounded resize-none h-24"
                 />
 
-                <button type="submit" aria-label="Continue to next step" className="w-full bg-[#007f8f] text-white font-semibold py-3 rounded hover:bg-[#006e7c] transition">
+                <button type="submit" id='finalbutton' aria-label="Continue to next step" className="w-full bg-[#007f8f] text-white font-semibold py-3 rounded hover:bg-[#006e7c] transition">
                   Submit Request
                 </button>
               </>
@@ -933,7 +899,9 @@ export default function Form({ data }: { data: any }) {
           </form>
           {/* Cancel */}
           <div className="mt-6">
-            <button type="submit" className="text-sm text-blue-600 hover:underline">← Cancel and return to home</button>
+            <button type="button" className="text-sm text-blue-600 hover:underline" onClick={() => {
+              window.location.href = "https://www.premierinn.com/gb/en/home.html";
+            }}>← Cancel and return to home</button>
           </div>
         </main>
       </div>
