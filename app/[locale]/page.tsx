@@ -11,7 +11,7 @@ async function getData() {
 }
 
 
-export default async function Page( params: Props) {
+export default async function Page({ params }: Props) {
   const data = await getData();
   return (
     <Suspense fallback={<div>Loading...</div>}>
