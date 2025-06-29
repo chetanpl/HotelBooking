@@ -110,6 +110,9 @@ const RadioCardGroup = ({ name, options, selected, onChange }: RadioCardGroupPro
 
 // type ContactDetails = z.infer<typeof contactDetailsSchema>;
 export default function Form({ data }: { data: any }) {
+   if (data?.error) {
+    return <div>Error: {data.error}</div>;
+  }
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [bookerType, setBookerType] = useState<string>('');
   const [stayType, setStayType] = useState<string>('');

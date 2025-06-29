@@ -7,26 +7,29 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://hotel-booking-pi-olive.vercel.app/api/booking';
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-  let data = null;
+  if (!apiUrl) {
+    return <div>API URL is not configured.</div>;
+  }
 
   try {
     const res = await fetch(apiUrl, { cache: 'no-store' });
 
     if (!res.ok) {
-      throw new Error(`Fetch failed with status: ${res.status}`);
+      console.error(`Fetch failed: ${res.status} ${res.statusText}`);
+      return <div>Failed to load booking data (status {res.status})</div>;
     }
 
-    data = await res.json();
-  } catch (error) {
-    console.error('Failed to fetch booking data:', error);
-    data = { error: 'Failed to load bookings' };
-  }
+    const data = await res.json();
 
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <Form data={data} />
-    </Suspense>
-  );
+    return (
+      <Suspense fallback={<div>Loading...</div>}>
+        <Form data={data} />
+      </Suspense>
+    );
+  } catch (error) {
+    console.error('Unexpected error fetching booking data:', error);
+    return <div>Unexpected error occurred loading booking data.</div>;
+  }
 }
