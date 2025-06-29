@@ -1,18 +1,20 @@
 import { Suspense } from 'react';
 import Form from './form';
-type Props = {
-  params: { locale: string };
+import { type Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Booking Page',
 };
 
-async function getData() {
-   const apiUrl:string = process.env.API_URL || 'http://localhost:3000/api/booking';
-  const res = await fetch(apiUrl, { cache: 'no-store' }  );
-  return res.json();
-}
+export default async function Page({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const apiUrl = process.env.API_URL || 'http://localhost:3000/api/booking';
+  const res = await fetch(apiUrl, { cache: 'no-store' });
+  const data = await res.json();
 
-
-export default async function Page({ params }: Props) {
-  const data = await getData();
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Form data={data} />
