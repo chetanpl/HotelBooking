@@ -136,6 +136,7 @@ export default function Form({ data }: { data: any }) {
   const [withChildren, setWithChildren] = useState<boolean>(false);
   const [extraRoomNeeded, setExtraRoomNeeded] = useState<boolean>(false);
   const [roomOptions, setRoomOptions] = useState<RoomOption[]>(initialRoomOptions);
+   const [successAlert, setSuccessAlert] = useState(false);
   const [rooms, setRooms] = useState<Record<RoomType, number>>(() => {
     return Object.fromEntries(
       initialRoomOptions.map(({ type }) => [type, 0])
@@ -177,11 +178,7 @@ export default function Form({ data }: { data: any }) {
 
   const onSubmit = async (data: ContactDetailsFormValues
   ) => {
-    const contact = data.contact;
-    const booking = data.booking;
-    const totalRoom = data.numberofroom?.room?.total;
-    const anyComments= data.numberofroom?.room;
-const payload = {
+     const payload = {
     contact: data.contact,
     booking: data.booking,
     numberofroom: {
@@ -204,8 +201,10 @@ const payload = {
       console.error('Validation error:', errorData.error);
     } else {
       const result = await response.json();
-      alert(result.message);
-      window.location.reload();
+      setSuccessAlert(true);
+       setTimeout(() => {
+     window.location.reload();
+    }, 4000);
     }
   } catch (error) {
     console.error('Submission failed:', error);
@@ -932,6 +931,22 @@ const payload = {
           </div>
         </main>
       </div>
+      {successAlert && (
+         <div className="fixed top-0 left-0 w-full bg-green-500 text-white py-3 text-center shadow-lg z-50 animate-fadeInOut">
+    Booking Received!
+  </div>
+      )}
+       <style jsx>{`
+        @keyframes fadeInOut {
+          0% { opacity: 0; transform: translateY(-10px); }
+          10%, 90% { opacity: 1; transform: translateY(0); }
+          100% { opacity: 0; transform: translateY(-10px); }
+        }
+        .animate-fadeInOut {
+          animation: fadeInOut 3s ease forwards;
+        }
+      `}</style>
     </>
   );
 }
+

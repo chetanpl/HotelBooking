@@ -14,8 +14,8 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000/en](http://localhost:3000/en) with English language
-Open [http://localhost:3000/de](http://localhost:3000/de) with Germon language
+Open [https://hotel-booking-git-main-chetanpls-projects.vercel.app/en](https://hotel-booking-git-main-chetanpls-projects.vercel.app/en) with English language
+Open [https://hotel-booking-git-main-chetanpls-projects.vercel.app/en](https://hotel-booking-git-main-chetanpls-projects.vercel.app/en) with Germon language
 Here are the screenshots: I have added the German Language screenshots more.
 
 Desktop view
