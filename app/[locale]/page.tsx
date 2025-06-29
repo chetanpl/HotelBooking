@@ -6,11 +6,7 @@ export const metadata: Metadata = {
   title: 'Booking Page',
 };
 
-export default async function Page({
-  params,
-}: {
-  params: { locale: string };
-}) {
+export default async function Page() {
   const apiUrl = process.env.API_URL || 'http://localhost:3000/api/booking';
   const res = await fetch(apiUrl, { cache: 'no-store' });
   const data = await res.json();
