@@ -190,7 +190,7 @@ const payload = {
     },
   };
   try {
-    const apiUrl:string = process.env.NEXT_PUBLIC_API_URL || 'https://hotel-booking-pi-olive.vercel.app/api/booking';
+    const apiUrl:string = 'https://hotel-booking-pi-olive.vercel.app/api/booking';
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
