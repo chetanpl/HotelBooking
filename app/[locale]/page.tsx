@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default async function Page() {
   const apiUrl =
-    process.env.NEXT_PUBLIC_API_URL || 'https://hotel-booking-pi-olive.vercel.app/api/booking';
+    process.env.NEXT_PUBLIC_API_URL || 'https://hotel-booking-sigma-ashen.vercel.app/api/booking';
 
   try {
     const res = await fetch(apiUrl, { cache: 'no-store' });
