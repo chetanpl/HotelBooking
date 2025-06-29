@@ -15,17 +15,8 @@ bun dev
 ```
 
 Open [https://hotel-booking-git-main-chetanpls-projects.vercel.app/en](https://hotel-booking-git-main-chetanpls-projects.vercel.app/en) with English language
-Open [https://hotel-booking-git-main-chetanpls-projects.vercel.app/en](https://hotel-booking-git-main-chetanpls-projects.vercel.app/en) with Germon language
+Open [https://hotel-booking-git-main-chetanpls-projects.vercel.app/de](https://hotel-booking-git-main-chetanpls-projects.vercel.app/de) with Germon language
 Here are the screenshots: I have added the German Language screenshots more.
-
-Desktop view
-![alt text](image.png)
-![alt text](image-5.png)
-Mobile view
-![alt text](image-1.png)
-![alt text](image-2.png)
-![alt text](image-3.png)
-![alt text](image-4.png)
 
 
 # Core Requirements
