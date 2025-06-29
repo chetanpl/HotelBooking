@@ -1,5 +1,10 @@
 import { Suspense } from 'react';
 import Form from './form';
+type Props = {
+  params: {
+    locale: string;
+  };
+};
 
 async function getData() {
    const apiUrl:string = process.env.API_URL || 'http://localhost:3000/api/booking';
@@ -7,7 +12,8 @@ async function getData() {
   return res.json();
 }
 
-export default async function Page({ params }: { params: { locale: string } }) {
+
+export default async function Page( params: Props) {
   const data = await getData();
   return (
     <Suspense fallback={<div>Loading...</div>}>
