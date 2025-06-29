@@ -1,9 +1,7 @@
 import { Suspense } from 'react';
 import Form from './form';
 type Props = {
-  params: {
-    locale: string;
-  };
+  params: { locale: string };
 };
 
 async function getData() {
