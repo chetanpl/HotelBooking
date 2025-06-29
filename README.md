@@ -15,6 +15,7 @@ bun dev
 ```
 
 Open [https://hotel-booking-git-main-chetanpls-projects.vercel.app/en](https://hotel-booking-git-main-chetanpls-projects.vercel.app/en) with English language
+
 Open [https://hotel-booking-git-main-chetanpls-projects.vercel.app/de](https://hotel-booking-git-main-chetanpls-projects.vercel.app/de) with Germon language
 Here are the screenshots: I have added the German Language screenshots more.
 
