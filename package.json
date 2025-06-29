@@ -6,6 +6,7 @@
   "homepage": "https://chetanpl.github.io/HotelBooking",
   "scripts": {
     "dev": "next dev",
+     "postinstall": "npm install --legacy-peer-deps",
     "build": "next build && next export",
     "start": "next start",
     "lint": "next lint",
