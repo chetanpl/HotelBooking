@@ -1,14 +1,14 @@
 import Form from './form';
 import { type Metadata } from 'next';
-
+import { headers } from 'next/headers';
 export const metadata: Metadata = {
   title: 'Booking Page',
 };
 
 export default async function Page() {
-  const apiUrl =
-    process.env.NEXT_PUBLIC_API_URL || 'https://hotel-booking-sigma-ashen.vercel.app/api/booking';
-
+  const host = (await headers()).get('host');
+  const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
+  const apiUrl = `${protocol}://${host}${process.env.NEXT_PUBLIC_API_URL}`;
   try {
     const res = await fetch(apiUrl, { cache: 'no-store' });
 

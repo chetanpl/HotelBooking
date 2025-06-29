@@ -187,7 +187,7 @@ export default function Form({ data }: { data: any }) {
     },
   };
   try {
-    const apiUrl:string = process.env.NEXT_PUBLIC_API_URL || 'https://hotel-booking-sigma-ashen.vercel.app/api/booking';
+    const apiUrl:string = `${window.location.origin}${process.env.NEXT_PUBLIC_API_URL}`
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
@@ -201,9 +201,11 @@ export default function Form({ data }: { data: any }) {
       console.error('Validation error:', errorData.error);
     } else {
       const result = await response.json();
+      console.log('Booking received and here are all details', result);
       setSuccessAlert(true);
        setTimeout(() => {
-     window.location.reload();
+        //reset the form
+       window.location.reload();
     }, 4000);
     }
   } catch (error) {
