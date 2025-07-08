@@ -595,8 +595,6 @@ export default function Form({ data }: { data: any }) {
                   errors={errors}
                   errorMessage={errors.booking?.companyname?.message}
                 />
-                {/* {JSON.stringify(errors.booking)} */}
-
 
                 <>
                   <h3 className="font-medium mb-2">{t('is_your_group_staying_for_Business_Leisure')}</h3>
