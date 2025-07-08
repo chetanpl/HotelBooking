@@ -54,7 +54,7 @@ const StepperControl: React.FC<StepperControlProps> = ({ type, label, count, dec
 );
 
 const RoomSelector: React.FC<{ options: RoomOption[], rooms: Record<RoomType, number>;
-  setRooms: React.Dispatch<React.SetStateAction<Record<RoomType, number>>>; }> = ({ options, rooms, setRooms }) => {
+  setRooms: React.Dispatch<React.SetStateAction<Record<RoomType, number>>>; t:any }> = ({ options, rooms, setRooms,t }) => {
 
 const decrement = (type: RoomType) => {
   setRooms((prev) => ({
@@ -75,8 +75,10 @@ const increment = (type: RoomType) => {
         <div key={type} className="space-y-2 p-4 border shadow-md flex justify-between items-center" role="group" aria-labelledby={`${type}-label`}>
           {/* Left: Label and Subtitle */}
           <div className="font-medium flex-1 text-left">
-            <div id={`${type}-label`}>{label}</div>
-            <p className="text-sm text-gray-600 my-2">{subtitle}</p>
+            <div id={`${type}-label`}>{t(type)}</div>
+
+            {/* <div id={`${type}-label`}>{label}</div> */}
+            <p className="text-sm text-gray-600 my-2">{t(subtitle)}</p>
           </div>
 
           <div className="border-l border-gray-300 h-12" aria-hidden="true"></div>
@@ -91,9 +93,9 @@ const increment = (type: RoomType) => {
         <div className="flex-1 font-medium text-left" aria-hidden="true"></div>
         <div className="flex-1 flex justify-center mt-2">
           <div className="text-base font-semibold flex items-center gap-2" role="status" aria-live="polite">
-            <span id="total-label">Total:</span>
+            <span id="total-label">{t('total')}:</span>
             <span aria-labelledby="total-label">
-              {Object.values(rooms).reduce((total, count) => total + count, 0)} rooms
+              {Object.values(rooms).reduce((total, count) => total + count, 0)} {t('rooms')}
             </span>
           </div>
         </div>

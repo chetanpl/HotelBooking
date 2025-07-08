@@ -17,10 +17,11 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import RoomSelector from "../components/roomstype";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { contactDetailsSchema, ContactDetailsFormValues, combinedSchema } from "./../../utility/validationSchema";
+import { ContactDetailsFormValues, combinedSchema } from "./../../utility/validationSchema";
 import { z } from "zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { countries, extraRoom, familyOptions, hotels, initialRoomOptions } from "@/utility/data";
+import { FloatingLabelInput, FloatingLabelInputBooking, RadioCardGroupBooking } from "../components/UI/FloatingLabelInput";
 export type RoomType = "single" | "double" | "twin" | "family2" | "family3_1" | "family3_2" | "family4" | "AccessibleSingle" | "Accessibledouble" | "Accessibletwin"
 interface Rooms {
   single: number;
@@ -108,9 +109,8 @@ const RadioCardGroup = ({ name, options, selected, onChange }: RadioCardGroupPro
   </div>
 );
 
-// type ContactDetails = z.infer<typeof contactDetailsSchema>;
 export default function Form({ data }: { data: any }) {
-   if (data?.error) {
+  if (data?.error) {
     return <div>Error: {data.error}</div>;
   }
   const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -126,17 +126,15 @@ export default function Form({ data }: { data: any }) {
   const [countrySearch, setCountrySearch] = useState<string>("");
   const dropdownRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const [selectedHotel, setSelectedHotel] = useState<string>('');
-  const [hotelSuggestions, setHotelSuggestions] = useState<string[]>([]);
+  const [, setSelectedHotel] = useState<string>('');
+  const [, setHotelSuggestions] = useState<string[]>([]);
   const [checkIn, setCheckIn] = useState<Date | null>(null);
   const [checkOut, setCheckOut] = useState<Date | null>(null);
-  const [visitReason, setVisitReason] = useState<string>('');
-  const [visitReasonError, setVisitReasonError] = useState<boolean>(false);
   const [activeField, setActiveField] = useState<'checkin' | 'checkout' | null>(null);
   const [withChildren, setWithChildren] = useState<boolean>(false);
   const [extraRoomNeeded, setExtraRoomNeeded] = useState<boolean>(false);
   const [roomOptions, setRoomOptions] = useState<RoomOption[]>(initialRoomOptions);
-   const [successAlert, setSuccessAlert] = useState(false);
+  const [successAlert, setSuccessAlert] = useState(false);
   const [rooms, setRooms] = useState<Record<RoomType, number>>(() => {
     return Object.fromEntries(
       initialRoomOptions.map(({ type }) => [type, 0])
@@ -164,6 +162,7 @@ export default function Form({ data }: { data: any }) {
       },
       booking: {
         bookerType: "",
+        companyname:"",
         stayType: "",
         schoolGroup: false,
         groupVisitReason: "",
@@ -171,46 +170,46 @@ export default function Form({ data }: { data: any }) {
         checkOut: undefined,
         packageType: "",
       },
-      numberofroom: { room: { 'totalRooms': 0 },comments:"" }
+      numberofroom: { room: { 'totalRooms': 0 }, comments: "" }
     },
   });
 
 
   const onSubmit = async (data: ContactDetailsFormValues
   ) => {
-     const payload = {
-    contact: data.contact,
-    booking: data.booking,
-    numberofroom: {
-      room: data.numberofroom?.room,
-      comments: data.numberofroom?.comments || '',
-    },
-  };
-  try {
-    const apiUrl:string = `${window.location.origin}${process.env.NEXT_PUBLIC_API_URL}`
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+    const payload = {
+      contact: data.contact,
+      booking: data.booking,
+      numberofroom: {
+        room: data.numberofroom?.room,
+        comments: data.numberofroom?.comments || '',
       },
-      body: JSON.stringify(payload),
-    });
+    };
+    try {
+      const apiUrl: string = `${window.location.origin}${process.env.NEXT_PUBLIC_API_URL}`
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Validation error:', errorData.error);
-    } else {
-      const result = await response.json();
-      console.log('Booking received and here are all details', result);
-      setSuccessAlert(true);
-       setTimeout(() => {
-        //reset the form
-       window.location.reload();
-    }, 4000);
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Validation error:', errorData.error);
+      } else {
+        const result = await response.json();
+        console.log('Booking received and here are all details', result);
+        setSuccessAlert(true);
+        setTimeout(() => {
+          //reset the form
+          window.location.reload();
+        }, 4000);
+      }
+    } catch (error) {
+      console.error('Submission failed:', error);
     }
-  } catch (error) {
-    console.error('Submission failed:', error);
-  }
     // handle the full form data
   };
 
@@ -240,7 +239,7 @@ export default function Form({ data }: { data: any }) {
 
   useEffect(() => {
     if (checkOut) {
-      setValue("booking.checkOut",  new Date(checkOut));
+      setValue("booking.checkOut", new Date(checkOut));
       clearErrors("booking.checkOut");
     }
   }, [checkOut]);
@@ -407,44 +406,31 @@ export default function Form({ data }: { data: any }) {
                 )}
               </div>
               {/* First Name */}
-              <div className="mb-4 relative">
-                <input {...register("contact.firstName")}
-                  id="FirstName"
-                  type="text"
-                  placeholder={t('firstName')} aria-required="true"
-                  aria-describedby="firstName-desc"
-                  className="peer w-full border border-gray-300 rounded px-4 py-3 text-sm text-[#333]"
-                />
-                <label
-                  htmlFor="FirstName"
-                  className="block text-sm font-medium text-gray-900 absolute left-[2%] top-[-22%] z-10 bg-white px-2 opacity-0 peer-focus:opacity-100 transition-opacity duration-200"
-                >
-                  {t('firstName')}
-                </label>
-                {errors.contact?.firstName?.message && (
-                  <p className="text-red-600">{t('error_firstname')}</p>
-                )}
-              </div>
+
+              <FloatingLabelInput
+                id="FirstName"
+                label={t('firstName')}
+                register={register}
+                name="contact.firstName"
+                placeholder={t('firstName')}
+                errors={errors}
+                errorKey="error_firstname"
+                t={t}
+              />
 
               {/* Last Name */}
-              <div className="mb-4 relative">
-                <input  {...register("contact.lastName")}
-                  id="LastName"
-                  type="text"
-                  placeholder={t('lastName')} aria-required="true"
-                  aria-describedby="lastName-desc"
-                  className="peer w-full border border-gray-300 rounded px-4 py-3 text-sm text-[#333]"
-                />
-                <label
-                  htmlFor="LastName"
-                  className="block text-sm font-medium text-gray-900 absolute left-[2%] top-[-22%] z-10 bg-white px-2 opacity-0 peer-focus:opacity-100 transition-opacity duration-200"
-                >
-                  {t('lastName')}
-                </label>
-                {errors.contact?.lastName?.message && (
-                  <p className="text-red-600">{t('error_lastname')}</p>
-                )}
-              </div>
+
+              <FloatingLabelInput
+                id="LastName"
+                label={t('lastName')}
+                register={register}
+                name="contact.lastName"
+                placeholder={t('lastName')}
+                errors={errors}
+                errorKey="error_lastname"
+                t={t}
+              />
+
 
 
               <div className="mb-4 relative" ref={dropdownRef}>
@@ -548,29 +534,21 @@ export default function Form({ data }: { data: any }) {
               </div>
 
               {/* Email */}
-              <div className="mb-6 relative">
-                <input {...register("contact.email")}
-                  id="Email"
-                  type="email"
-                  placeholder={t('email')}
-                  className="peer w-full border border-gray-300 rounded px-4 py-3 text-sm text-[#333]"
-                  aria-required="true"
-                  aria-describedby="email-desc"
-                />
-                <label
-                  htmlFor="Email"
-                  className="block text-sm font-medium text-gray-900 absolute left-[2%] top-[-22%] z-10 bg-white px-2 opacity-0 peer-focus:opacity-100 transition-opacity duration-200"
-                >
-                  {t('email')} *
-                </label>
-                {errors.contact?.email?.message && (
-                  <p className="text-red-600">{errors.contact.email.message}</p>
-                )}
-              </div>
+
+              <FloatingLabelInput
+                id="Email"
+                label={t('email')}
+                register={register}
+                name="contact.email"
+                placeholder={t('email')}
+                errors={errors}
+                errorKey="email"
+                t={t}
+              />
 
               {/* Submit Button */}
               <button type="button" id='continueBooking1' aria-label="Continue to next step" onClick={handleContinue} className="w-full bg-[#007f8f] text-white font-semibold py-3 rounded hover:bg-[#006e7c] transition">
-                Continue
+                {t('Continue')}
               </button>
             </Accordion>
 
@@ -584,49 +562,46 @@ export default function Form({ data }: { data: any }) {
               <div className="space-y-6">
                 <div className="max-w-md space-y-6 text-sm text-gray-800" aria-labelledby="booking-details-heading">
                   <h3 className="font-medium mb-2 sr-only">What type of booker are you?</h3>
-                  <RadioCardGroup
+
+                  <RadioCardGroupBooking
                     name="bookerType"
-                    options={['Personal', 'Business', 'Travel Management Company', 'Travel Agent/Tour Operator']}
+                    options={[
+                      'Personal',
+                      'Business',
+                      'Travel Management Company',
+                      'Travel Agent/Tour Operator',
+                    ]}
                     selected={bookerType}
                     onChange={(value) => {
                       setBookerType(value);
                       setValue('booking.bookerType', value);
                       trigger('booking.bookerType');
                     }}
-                    aria-required="true"
+                    ariaRequired={true}
                   />
+
                   {errors.booking?.bookerType && (
                     <p className="text-sm text-red-600">{errors.booking.bookerType.message}</p>
                   )}
                 </div>
 
 
+                <FloatingLabelInputBooking
+                  id="CompanyName"
+                  label={t('companyname')}
+                  register={register}
+                  name="booking.companyname"
+                  placeholder={t('companyname')}
+                  errors={errors}
+                  errorMessage={errors.booking?.companyname?.message}
+                />
+                {/* {JSON.stringify(errors.booking)} */}
 
 
-
-
-
-                <div className="mb-4 relative">
-                  <input {...register("booking.companyname")}
-                    id="CompanyName"
-                    type="text"
-                    placeholder="Company Name *" aria-required="true"
-                    aria-describedby="company-desc"
-                    className="peer w-full border border-gray-300 rounded px-4 py-3 text-sm text-[#333]"
-                  />
-                  <label
-                    htmlFor="CompanyName"
-                    className="block text-sm font-medium text-gray-900 absolute left-[2%] top-[-22%] z-10 bg-white px-2 opacity-0 peer-focus:opacity-100 transition-opacity duration-200"
-                  >
-                    Company Name *
-                  </label>
-                  {errors.booking?.companyname?.message && (
-                    <p className="text-sm text-red-600 mt-1">{errors.booking.companyname.message}</p>
-                  )}
-                </div>
                 <>
-                  <h3 className="font-medium mb-2">Is your group staying for Business or Leisure?</h3>
-                  <RadioCardGroup
+                  <h3 className="font-medium mb-2">{t('is_your_group_staying_for_Business_Leisure')}</h3>
+                  
+                  <RadioCardGroupBooking
                     name="stayType"
                     options={['Business', 'Leisure']}
                     selected={stayType}
@@ -635,7 +610,7 @@ export default function Form({ data }: { data: any }) {
                       setValue('booking.stayType', value);
                       trigger('booking.stayType');
                     }}
-                    aria-required="true"
+                    ariaRequired={true}
                   />
                   {errors.booking?.stayType && (
                     <p className="text-sm text-red-600 mt-1">{errors.booking.stayType.message}</p>
@@ -649,11 +624,11 @@ export default function Form({ data }: { data: any }) {
                     onChange={(e) => setSchoolGroup(e.target.checked)}
                     className="mt-1"
                   />
-                  <span>Please tick this box if you are booking for a school or youth group.</span>
+                  <span>{t('Please_tick_this_box_booking_school_group')}</span>
                 </label>
 
                 <>
-                  <label htmlFor="groupVisitReason" className="block font-medium mb-1">What is the reason for your group's visit?</label>
+                  <label htmlFor="groupVisitReason" className="block font-medium mb-1">{t('reason_group_visit')}</label>
                   <select
                     className={`w-full border rounded px-3 py-2 text-sm ${reasonError ? 'border-red-500' : 'border-gray-300'}`}
                     value={reason}
@@ -688,9 +663,9 @@ export default function Form({ data }: { data: any }) {
                   )}
                 </>
                 <>
-                  <label className="block font-medium mb-1">Booking details</label>
+                  <label className="block font-medium mb-1">{t('booking_details')}</label>
                   <label className="flex items-start gap-2">
-                    <span>Our team will try to accommodate your group’s preferences in terms of hotels and dates. If that’s not possible, we’ll do everything we can to offer the best alternatives.</span>
+                    <span>{t('out_team_accommudate')}</span>
                   </label>
                 </>
 
@@ -716,7 +691,7 @@ export default function Form({ data }: { data: any }) {
                     >
                       <p className="text-gray-500 text-xs">Check In</p>
                       <p className="text-black">
-                        {checkIn ? checkIn.toLocaleDateString() : 'Select date'}
+                        {checkIn ? checkIn.toLocaleDateString() : `${t('selectdate')}`}
                       </p>
                       {errors.booking?.checkIn && (
                         <p className="text-sm text-red-600 mt-1">{errors.booking?.checkIn.message}</p>
@@ -740,7 +715,7 @@ export default function Form({ data }: { data: any }) {
                     >
                       <p className="text-gray-500 text-xs">Check Out</p>
                       <p className="text-black">
-                        {checkOut ? checkOut.toLocaleDateString() : 'Select date'}
+                        {checkOut ? checkOut.toLocaleDateString() : `${t('selectdate')}`}
                       </p>
                       {errors.booking?.checkOut && (
                         <p className="text-sm text-red-600 mt-1">{errors.booking?.checkOut.message}</p>
@@ -775,8 +750,8 @@ export default function Form({ data }: { data: any }) {
                   )}
                 </div>
                 <>
-                  <h3 className="font-medium mb-2">Package type</h3>
-                  <RadioCardGroup
+                  <h3 className="font-medium mb-2">{t('package_type')}</h3>
+                  <RadioCardGroupBooking
                     name="packageType"
                     options={['Premier Inn Breakfast', 'Meal deal (dinner, drink and breakfast)']}
                     selected={packageType}
@@ -785,14 +760,14 @@ export default function Form({ data }: { data: any }) {
                       setValue('booking.packageType', value);
                       trigger('booking.packageType');
                     }}
-                    aria-required="true"
+                    ariaRequired={true}
                   />
                 </>
                 {errors.booking?.packageType && (
                   <p className="text-sm text-red-600 mt-1">{errors.booking.packageType.message}</p>
                 )}
                 <>   <button type="button" id='continueBooking2' onClick={continueBooking} aria-label="Continue to next step" className="w-full bg-[#007f8f] text-white font-semibold py-3 rounded hover:bg-[#006e7c] transition">
-                  Continue
+                                 {t('Continue')}
                 </button></>
               </div>
 
@@ -805,9 +780,9 @@ export default function Form({ data }: { data: any }) {
               aria-controls="room-requirements-panel" aria-labelledby="room-requirements-header">
 
               <>
-                <h3 className="text-xl font-semibold">Rooms</h3>
+                <h3 className="text-xl font-semibold">{t('room')}</h3>
                 <p id="room-selection-desc" className="text-sm text-gray-600 my-2">
-                  Select the maximum number of rooms required by room type and occupancy.
+                 {t('type_occupancy')}
                 </p>
                 <p className="text-sm text-blue-600 underline mb-2">
                   <a aria-describedby="room-selection-desc"
@@ -815,7 +790,7 @@ export default function Form({ data }: { data: any }) {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    See room types
+                    {t('see_room')}
                   </a>
                 </p>
 
@@ -828,7 +803,7 @@ export default function Form({ data }: { data: any }) {
                     className="w-4 h-4" aria-describedby="with-children-description"
                   />
                   <label htmlFor="with-children" className="text-sm">
-                    Travelling/staying with children (2-15 years).
+                      {t('travelling_staying')}
                   </label>
                 </div>
 
@@ -842,7 +817,7 @@ export default function Form({ data }: { data: any }) {
                     aria-describedby="accessible-room-desc"
                   />
                   <label htmlFor="accessible-room" className="text-sm">
-                    Accessible room is needed.
+                      {t('accessible_room')}
                   </label>
                 </div>
                 {withChildren &&
@@ -894,33 +869,32 @@ export default function Form({ data }: { data: any }) {
                 )}
 
                 <div className="space-y-2">
-                  <RoomSelector options={roomOptions} rooms={rooms} setRooms={setRooms} />
+                  <RoomSelector options={roomOptions} rooms={rooms} setRooms={setRooms} t={t} />
                 </div>
 
                 <section aria-labelledby="additional-info-heading" className="mt-6">
                   <h3 id="additional-info-heading" className="text-xl font-semibold">
-                    Additional information (optional)
+                    {t('additional_info')}
                   </h3>
                   <p className="text-sm text-gray-600 my-2">
-                    Let us know if you have any additional information or special requests.
+                    {t('let_us_know')}
                   </p>
                   <p className="text-sm text-gray-600">
-                    If you do not require the same number of rooms on each night of your stay,
-                    please state below the number and type of rooms required each night.
+                    {t('each_night')}
                   </p>
                 </section>
 
                 <textarea
                   name="comments"
                   id="comments"
-                  placeholder="Enter your comments here"
+                  placeholder={t('commenthere')}
                   maxLength={1000}
-                  onChange={(e)=> setValue("numberofroom.comments", e.target?.value)}
+                  onChange={(e) => setValue("numberofroom.comments", e.target?.value)}
                   className="w-full mt-2 p-2 border rounded resize-none h-24"
                 />
 
                 <button type="submit" id='finalbutton' aria-label="Continue to next step" className="w-full bg-[#007f8f] text-white font-semibold py-3 rounded hover:bg-[#006e7c] transition">
-                  Submit Request
+                  {t('submitrequest')}
                 </button>
               </>
             </Accordion>
@@ -929,16 +903,16 @@ export default function Form({ data }: { data: any }) {
           <div className="mt-6">
             <button type="button" className="text-sm text-blue-600 hover:underline" onClick={() => {
               window.location.href = "https://www.premierinn.com/gb/en/home.html";
-            }}>← Cancel and return to home</button>
+            }}>← {t('cancelandreturn')}</button>
           </div>
         </main>
       </div>
       {successAlert && (
-         <div className="fixed top-0 left-0 w-full bg-green-500 text-white py-3 text-center shadow-lg z-50 animate-fadeInOut">
-    Booking Received!
-  </div>
+        <div className="fixed top-0 left-0 w-full bg-green-500 text-white py-3 text-center shadow-lg z-50 animate-fadeInOut">
+          Booking Received!
+        </div>
       )}
-       <style jsx>{`
+      <style jsx>{`
         @keyframes fadeInOut {
           0% { opacity: 0; transform: translateY(-10px); }
           10%, 90% { opacity: 1; transform: translateY(0); }

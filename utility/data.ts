@@ -26,9 +26,9 @@ export const countries: Country[] = [
     "Sunset Bay Resort"
   ];
 export const initialRoomOptions: RoomOption[] = [
-  { type: "single", label: "Single Occupancy", subtitle: "1 adult" },
-  { type: "double", label: "Double Occupancy", subtitle: "2 adults" },
-  { type: "twin", label: "Twin", subtitle: "2 adults" }
+  { type: "single", label: "Single Occupancy", subtitle: "adult1" },
+  { type: "double", label: "Double Occupancy", subtitle: "adults2" },
+  { type: "twin", label: "Twin", subtitle: "adults2" }
 ];
 
 export const familyOptions: RoomOption[] = [
