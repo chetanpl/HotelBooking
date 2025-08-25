@@ -15,17 +15,9 @@ bun dev
 ```
 
 Open [https://hotel-booking-git-main-chetanpls-projects.vercel.app/en](https://hotel-booking-git-main-chetanpls-projects.vercel.app/en) with English language
-Open [https://hotel-booking-git-main-chetanpls-projects.vercel.app/en](https://hotel-booking-git-main-chetanpls-projects.vercel.app/en) with Germon language
-Here are the screenshots: I have added the German Language screenshots more.
 
-Desktop view
-![alt text](image.png)
-![alt text](image-5.png)
-Mobile view
-![alt text](image-1.png)
-![alt text](image-2.png)
-![alt text](image-3.png)
-![alt text](image-4.png)
+Open [https://hotel-booking-git-main-chetanpls-projects.vercel.app/de](https://hotel-booking-git-main-chetanpls-projects.vercel.app/de) with Germon language
+Here are the screenshots: I have added the German Language screenshots more.
 
 
 # Core Requirements
@@ -47,17 +39,9 @@ Achieve at least WCAG 2.2 AA compliance (semantic HTML, focus order, ARIA where 
 ## 5. ✅ State & Architecture
 Use TypeScript throughout, apply a clean component hierarchy, consider state management via React Context/Hooks (or a library of your choice), and demonstrate code organisation suitable for scale.
 
-## 6. ⏳ Testing
-Provide unit tests (`Jest + React Testing Library`) and at least one end-to-end scenario (`Cypress` or `Playwright`). Include accessibility tests where feasible.
-
-## 7. ⏳ Mock API Layer
-Simulate API endpoints for GET content and POST submissions (`MSW` or `Next.js Route Handlers`). Persist form data in memory or JSON for local dev.
-
-## 8. ⏳ CI & Tooling
+## 6.✅ CI & Tooling
 Add a minimal GitHub Actions workflow (install, lint, test). Pre-commit hooks (`lint-staged`, `husky`) are a plus.
 
-## 9. ⏳ Progressive Enhancement
+## 7. ✅ Progressive Enhancement
 Ensure the form works without JavaScript (graceful degradation) and is fully responsive across common breakpoints.
 
-## 10. ⏳ Improvements & Innovation
-Feel free to add enhancements such as dark mode, real-time form progress, typeahead address lookup, analytics event hooks, or Storybook docs. Mark these clearly as Stretch Goals in your README.
